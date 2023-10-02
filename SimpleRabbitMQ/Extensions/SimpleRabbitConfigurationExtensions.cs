@@ -12,6 +12,16 @@ using SimpleRabbitMQ.Services;
 using SimpleRabbitMQ.Services.Interfaces;
 using System.Threading.Channels;
 using System;
+using SimpleRabbitMQ.Services.Producers;
+using SimpleRabbitMQ.Repository;
+using SimpleRabbitMQ.Repository.Context;
+using Microsoft.EntityFrameworkCore;
+using Quartz.Impl;
+using Quartz.Spi;
+using Quartz;
+using SimpleRabbitMQ.Jobs;
+using Microsoft.Extensions.Logging;
+using static Quartz.Logging.OperationName;
 
 namespace SimpleRabbitMQ.Extensions
 {
@@ -28,8 +38,9 @@ namespace SimpleRabbitMQ.Extensions
             services.TryAddSingleton<ILoggingService, LoggingService>();
             services.AddSimpleOptions(configuration);
             services.TryAddSingleton<IRabbitMQFactory, RabbitMQFactory>();
-            services.TryAddSingleton<IProducingService, ProducingService>();
+           
             services.TryAddSingleton<IInicializeConfiguration, InicializeConfiguration>();
+            
 
             return new SimpleRabbitMQConfigBuilder(services);
         }
@@ -77,11 +88,55 @@ namespace SimpleRabbitMQ.Extensions
         /// Register producers for exchange."
         /// </summary>
         /// 
-        public static ISimpleRabbitMQConfigBuilder AddProducerAsync(this ISimpleRabbitMQConfigBuilder services) 
+        public static ISimpleRabbitMQConfigBuilder AddProducerAsync(this ISimpleRabbitMQConfigBuilder services, OutBoxConfig outBoxConfig = null) 
         {
+            services.Services.TryAddSingleton<IProducingMessageService, ProducingMessageService>();
             services.Services.AddHostedService<ProducerAsync>();
 
+            if (outBoxConfig is not null)
+                EnableOutboxService(services, outBoxConfig.ConnectionStringDataBase, outBoxConfig.CronJobConfig);
+
             return services;
+        }
+
+        /// <summary>
+        /// Register services outbox pattern."
+        /// </summary>
+        /// 
+
+        private static void EnableOutboxService(ISimpleRabbitMQConfigBuilder services, string connectionString, string cronConfig = "0 0/1 0 ? * * *")
+        {
+            ValidateEnableOutboxService(connectionString);
+
+            services.Services.AddDbContext<OutboxMessageDbContext>(options =>
+            {
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            }, ServiceLifetime.Scoped);
+
+            services.Services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
+            services.Services.AddScoped<IProducingOutBoxService, ProducingOutBoxService>();
+
+            services.Services.AddSingleton(provider =>
+            {
+                var schedulerFactory = new StdSchedulerFactory();
+                var scheduler = schedulerFactory.GetScheduler().Result;
+                return scheduler;
+            });
+
+            services.Services.AddQuartz(options =>
+            {
+                options.AddJob<OutBoxJob>(group => group
+                    .WithIdentity("outboxjob").Build()
+                    );
+
+                options.AddTrigger(trigger => trigger
+                    .WithIdentity("outboxjob-trigger")
+                    .ForJob("outboxjob")
+                    .WithCronSchedule(cronConfig)
+                    );
+            });
+
+            services.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
         }
 
         private static void ValidateAddConsumer<TConsumer>(string connectionName, string exchangeName) 
@@ -89,6 +144,14 @@ namespace SimpleRabbitMQ.Extensions
             if (string.IsNullOrEmpty(connectionName) && string.IsNullOrEmpty(exchangeName)) 
             {
                 throw new ArgumentException($"The connection and exchange names were not specified. {nameof(TConsumer)}");
+            };
+        }
+
+        private static void ValidateEnableOutboxService(string connectionString)
+        {
+            if (string.IsNullOrEmpty(connectionString))
+            {
+                throw new ArgumentException($"The connection string were not specified.");
             };
         }
     }

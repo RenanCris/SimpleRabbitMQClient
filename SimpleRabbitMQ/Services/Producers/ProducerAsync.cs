@@ -15,19 +15,19 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace SimpleRabbitMQ.Services
+namespace SimpleRabbitMQ.Services.Producers
 {
     internal sealed class ProducerAsync : IHostedService
     {
         private readonly ILoggingService _loggingService;
         private readonly IRabbitMQFactory _rabbitMQFactory;
         private readonly RabbitMQConfiguration _rabbitMQConfig;
-        private readonly IProducingService _producingService;
+        private readonly IProducingMessageService _producingService;
 
         public ProducerAsync(ILoggingService loggingService,
             IRabbitMQFactory rabbitMQFactory,
             IOptions<RabbitMQConfiguration> rabbitMQConfig,
-            IProducingService producingService)
+            IProducingMessageService producingService)
         {
             _loggingService = loggingService;
             _rabbitMQFactory = rabbitMQFactory;
@@ -64,6 +64,6 @@ namespace SimpleRabbitMQ.Services
             return Task.CompletedTask;
         }
 
-        
+
     }
 }

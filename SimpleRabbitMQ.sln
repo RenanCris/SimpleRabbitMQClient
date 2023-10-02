@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleRabbitMQ", "SimpleRab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleRabbitMQ.Validation", "SimpleRabbitMQ.Validation\SimpleRabbitMQ.Validation.csproj", "{3F10F3AB-A347-490A-A3B4-4C9516C2CA61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRabbitMQ.Test", "SimpleRabbitMQ.Test\SimpleRabbitMQ.Test.csproj", "{50F9B9BA-DA99-4DDD-860C-6B730F72588E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleRabbitMQ.Test", "SimpleRabbitMQ.Test\SimpleRabbitMQ.Test.csproj", "{50F9B9BA-DA99-4DDD-860C-6B730F72588E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

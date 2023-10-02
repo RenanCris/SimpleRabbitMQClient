@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SimpleRabbitMQ.Services.Interfaces
 {
-    public interface IProducingService : IProducingBaseService
+    public interface IProducingMessageService : IProducingBaseService
     {
         void UseDataConnection(IConnection connection, IModel channel, string connectionName);
-        IProducingService SetConnectionName(string connectionName);
+        public string GetConnectionNameUsed();
     }
 }

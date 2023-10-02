@@ -8,8 +8,6 @@ services:
       - "15672:15672" # Porta do painel de controle web (Management)
     environment:
       - RABBITMQ_ERLANG_COOKIE=same_cookie_for_both_nodes
-    networks:
-      - rabbitmq-net
 
   rabbitmq-node2:
     image: "rabbitmq:3-management"
@@ -19,8 +17,14 @@ services:
       - "15673:15672" # Porta do painel de controle web (Management)
     environment:
       - RABBITMQ_ERLANG_COOKIE=same_cookie_for_both_nodes
-    networks:
-      - rabbitmq-net
-
-networks:
-  rabbitmq-net:
+    
+  mysql:
+    image: mysql:latest
+    container_name: outbox-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admim
+      MYSQL_DATABASE: admim
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+    ports:
+      - "3306:3306"

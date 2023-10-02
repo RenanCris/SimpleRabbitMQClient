@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
 using SimpleRabbitMQ.Configurations;
 using SimpleRabbitMQ.Factories;
 using SimpleRabbitMQ.Services.Interfaces;
@@ -54,8 +55,7 @@ namespace SimpleRabbitMQ.Registrations.Builders
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex, config.Name);
-                    throw;
+                    _logger.LogError(ex, $"[InicializeConfiguration] Erro Configure Name: {config.Name}");
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace SimpleRabbitMQ.Registrations.Builders
             if (isUseDeadLetter)
             {
                 var deadLetterQueue = string.Concat(q.Name, "-dead-letter");
-                var deadLetterQueueRk = string.Concat(q.RoutingKey, "-dead-letter");
+                var deadLetterRK = string.Concat(q.RoutingKey, "-dead-letter");
 
                 channel.QueueDeclare(queue: deadLetterQueue,
                     durable: true,
@@ -73,7 +73,7 @@ namespace SimpleRabbitMQ.Registrations.Builders
                     autoDelete: false,
                     arguments: null);
 
-                channel.QueueBind(deadLetterQueue, exchange.DeadLetterExchange, deadLetterQueueRk, null);
+                channel.QueueBind(deadLetterQueue, exchange.DeadLetterExchange, deadLetterRK, null);
             }
         }
 
@@ -88,6 +88,12 @@ namespace SimpleRabbitMQ.Registrations.Builders
             if (isUseDeadLetter)
             {
                 argumentsQueue.Add("x-dead-letter-exchange", exchange.DeadLetterExchange);
+
+                if (exchange.DeadLetterExchangeType == "direct") 
+                {
+                    var deadLetterRK = string.Concat(q.RoutingKey, "-dead-letter");
+                    argumentsQueue.Add("x-dead-letter-routing-key", deadLetterRK);
+                }
             }
 
             new RabbitMqQueueValidation(q).ThrowException("The Queue Name was not configured.");
@@ -103,7 +109,7 @@ namespace SimpleRabbitMQ.Registrations.Builders
             _logger.LogInformation($"[InicializeConfiguration] ExchangeDeclare Queue Name {q.Name}");
         }
 
-        private bool DeclarerExchangeConfig(RabbitMqExchangeOptions exchange, RabbitMQ.Client.IModel channel)
+        private bool DeclarerExchangeConfig(RabbitMqExchangeOptions exchange, IModel channel)
         {
             new RabbitMqExchangeValidation(exchange).ThrowException("The Exchange Name was not configured.");
 

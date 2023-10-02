@@ -56,11 +56,11 @@ namespace SimpleRabbitMQ.Services
             ConsumerName = string.Concat(this.GetType().Name, "_", Guid.NewGuid());
         }
 
-        protected abstract Task HandleMessageAsync(BasicDeliverEventArgs message, CancellationToken cancellationToken);
+        protected abstract Task HandleMessageClientAsync(BasicDeliverEventArgs message, CancellationToken cancellationToken);
 
-        public async Task HandleMessagesAsync(BasicDeliverEventArgs message, CancellationToken cancellationToken)
+        public async virtual Task HandleMessagesAsync(BasicDeliverEventArgs message, CancellationToken cancellationToken)
         {
-            await HandleMessageAsync(message, cancellationToken);
+            await HandleMessageClientAsync(message, cancellationToken);
         }
 
         private void ValidateProperties()
@@ -106,10 +106,15 @@ namespace SimpleRabbitMQ.Services
                 }
                 catch (Exception ex)
                 {
-                    _loggingService.LogError(ex, $"Error while consuming data from Queue : {QueueName}. Message return to queue");
+                    var message = "Message return to queue.";
 
-                    if (!string.IsNullOrEmpty(exchangeConfig?.DeadLetterExchange))
+                    if (!string.IsNullOrEmpty(exchangeConfig?.DeadLetterExchange)) 
+                    {
                         Channel.BasicNack(eventArgs.DeliveryTag, false, false);
+                        message = "Message move to dead letter queue.";
+                    }
+
+                    _loggingService.LogError(ex, $"Error while consuming data from Queue : {QueueName}. {message}");
 
                     throw;
                 }
