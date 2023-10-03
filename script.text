@@ -1,0 +1,13 @@
+﻿ALTER DATABASE CHARACTER SET utf8mb4;
+
+CREATE TABLE `OutboxMessages` (
+    `Id` bigint NOT NULL AUTO_INCREMENT,
+    `MessageData` TEXT  NOT NULL,
+    `CreatedAt` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `ModifiedAt` DATETIME NULL,
+    `IsProcessed` BOOL NOT NULL,
+    `ExchangeName` VARCHAR(255)  NOT NULL,
+    `ConnectionName` VARCHAR(10)  NOT NULL,
+    `RoutingKey` VARCHAR(255) NOT NULL,
+    CONSTRAINT `PK_OutboxMessages` PRIMARY KEY (`Id`)
+) CHARACTER SET=utf8mb4;

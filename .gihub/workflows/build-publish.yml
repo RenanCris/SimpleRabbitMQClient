@@ -1,0 +1,52 @@
+name: "Build Publish"
+
+on:
+  pull_request:
+    branches: [main]
+
+env:
+  PATH_PROJECT: SimpleRabbitMQ/SimpleExcelGenerator.csproj
+  PATH_PROJECT_NUSPEC: SimpleRabbitMQ/SimpleRabbitMQ.nuspec
+  PATH_TESTS_PROJECT: SimpleRabbitMQ.Test/SimpleRabbitMQ.Test.csproj
+  NUGET_SERVER: https://api.nuget.org/v3/index.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Exibir instalações do .NET pré-existentes
+        run: |
+          dotnet --list-sdks
+          echo '**** Versão default assumida para o .NET ****'
+          dotnet --version
+      
+      - name: Setup .NET 6 
+        uses: actions/setup-dotnet@v3.0.3
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore NuGet packages
+        run: dotnet restore
+
+      - name: Extract NuGet package version
+        id: version
+        run: |
+          VERSION=$(grep -oP '<version>\K[^<]+' ${{ env.PATH_PROJECT_NUSPEC }} )
+          echo "##vso[task.setvariable variable=packageVersion]$VERSION"
+
+      - name: Build
+        run: dotnet build ${{ env.PATH_PROJECT }} --configuration Release --no-restore
+
+      - name: Execução dos testes
+        run: dotnet test ${{ env.PATH_TESTS_PROJECT }}
+
+      - name: Build and Publish NuGet package
+        run: |
+          msbuild ${{ env.PATH_PROJECT }} /p:Configuration=Release /p:OutputPath=./build
+
+      - name: Pack NuGet package  
+        run: dotnet pack ${{ env.PATH_PROJECT }} --configuration Release --no-build --output ./packages
+
+      - name: Publish NuGet package
+        run: dotnet nuget push ./packages/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

@@ -1,0 +1,33 @@
+﻿<package>
+  <metadata>
+    <!-- Informações básicas -->
+    <id>SimpleRabbitMQClient</id>
+    <version>1.0.1</version>
+    <title>Simple RabbitMQ Client</title>
+    <authors>Renan Nunes</authors>
+    <owners>Renan Nunes</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <Description>Simple client RabbitMQ usage OutBox Pattern</Description>
+    <tags>rabbitMQ library outbox</tags>
+
+
+    <!-- Informações de projeto -->
+    <projectUrl>https://github.com/RenanCris/SimpleRabbitMQClient</projectUrl>
+    <repository type="git" url="https://github.com/RenanCris/SimpleRabbitMQClient" />
+
+    <!-- Dependências do pacote -->
+    <dependencies>
+      <dependency id="Microsoft.AspNetCore.Http.Abstractions" version="2.2.0" />
+      <dependency id="Microsoft.EntityFrameworkCore" version="6.0.0" />
+      <dependency id="Microsoft.EntityFrameworkCore.Tools" version="6.0.0" />
+      <dependency id="Microsoft.Extensions.Hosting.Abstractions" version="6.0.0" />
+      <dependency id="Microsoft.Extensions.Logging" version="6.0.0" />
+      <dependency id="Microsoft.Extensions.Options" version="6.0.0" />
+      <dependency id="Microsoft.Extensions.Options.ConfigurationExtensions" version="6.0.0" />
+      <dependency id="Pomelo.EntityFrameworkCore.MySql" version="6.0.0" />
+      <dependency id="Quartz.Extensions.DependencyInjection" version="3.7.0" />
+      <dependency id="Quartz.Extensions.Hosting" version="3.7.0" />
+      <dependency id="RabbitMQ.Client" version="6.0.0" />
+    </dependencies>
+  </metadata>
+</package>
