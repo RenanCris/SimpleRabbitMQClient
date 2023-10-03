@@ -4,7 +4,7 @@ Package with a simple RabbitMQ client, with the option to use the outbox pattern
 Developed in .NET 6, it is a RabbitMQ client package, built upon the rabbitMQClient.net foundation. It provides semantic routing with the possibility of declarative configuration of various connection types, exchanges, and queues automatically. It allows registration of multiple consumers and direct producers for RabbitMQ, following the outbox pattern if needed.
 
 # Package
-	NuGet\Install-Package SimpleRabbitMQClientOutBox -Version 1.0.1
+	NuGet\Install-Package SimpleRabbitMQClientOutBox -Version 1.0.3
 
 # Usage
 
