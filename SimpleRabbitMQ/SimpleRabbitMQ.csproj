@@ -4,14 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Title>SimpleRabbitMQ</Title>
+    <Title>SimpleRabbitMQClientOutBox</Title>
     <Authors>Renan Nunes</Authors>
     <Company>Renan Nunes</Company>
     <Description>Simple rabbitmq client using outbox pattern</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Version>1.0.1</Version>
     <PackageProjectUrl>https://github.com/RenanCris/SimpleRabbitMQClient</PackageProjectUrl>
-    <IsPackable>true</IsPackable>
+    <PackageId>SimpleRabbitMQClientOutBox</PackageId>
+    
   </PropertyGroup>
 
   <ItemGroup>
