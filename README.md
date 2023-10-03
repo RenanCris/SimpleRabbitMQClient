@@ -161,15 +161,27 @@ To use the component, it is necessary to provide RabbitMQ configurations, and if
 
 The database connection provider is MySQL. To find the script for creating the database and table, please check the **'script.txt'** file in the root of the GitHub repository.
 
+# RabbitMQ Config Inicialization
+
+![exchange](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/4d47d6ae-31ec-4fc7-9682-2e1e8096132f)
+![queu](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/9887eb0d-018e-4265-bdef-4e5599cbb590)
+![queu-config](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/9699a90d-36f3-4bb8-8bdd-8049515585cd)
+
+
+# Logs
+
+![log](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/af851a12-96cf-4eec-9f57-ea6c7edbc292)
+
     
 # Example Test
 
 *This file* : **docker-compose.yml**
 
+![swagger](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/f2c41d72-56c2-47df-a34e-cea14e179fc3)
 
 # DataBase 
 
-
+![bd](https://github.com/RenanCris/SimpleRabbitMQClient/assets/7238977/8cf0a848-4eba-44fe-9927-6065936c142f)
 
 ## Etiquetas
 
