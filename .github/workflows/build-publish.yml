@@ -40,10 +40,6 @@ jobs:
       - name: Execução dos testes
         run: dotnet test ${{ env.PATH_TESTS_PROJECT }}
 
-      - name: Build and Publish NuGet package
-        run: |
-          msbuild ${{ env.PATH_PROJECT }} /p:Configuration=Release /p:OutputPath=./build
-
       - name: Pack NuGet package  
         run: dotnet pack ${{ env.PATH_PROJECT }} --configuration Release --no-build --output ./packages
 
