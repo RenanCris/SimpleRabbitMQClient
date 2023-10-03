@@ -41,6 +41,9 @@ namespace SimpleRabbitMQ.Registrations.Builders
 
                     using var channel = connection?.CreateModel();
 
+                    if (channel is null)
+                        throw new Exception("[InicializeConfiguration] Error not created channel.");
+
                     config.Exchanges.ToList().ForEach(exchange =>
                     {
                         bool isUseDeadLetter = DeclarerExchangeConfig(exchange, channel);

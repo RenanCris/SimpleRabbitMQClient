@@ -36,11 +36,11 @@
         /// <summary>
         /// Exchange name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = String.Empty;
 
         /// <summary>
         /// Name of dead-letter-exchange.
         /// </summary>
-        public string DeadLetterExchange { get; set; }
+        public string DeadLetterExchange { get; set; } = String.Empty;
     }
 }

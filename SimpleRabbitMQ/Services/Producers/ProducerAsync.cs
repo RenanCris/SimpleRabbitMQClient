@@ -46,6 +46,12 @@ namespace SimpleRabbitMQ.Services.Producers
                     var connection = _rabbitMQFactory.CreateRabbitMqConnection(rabbitMQ);
                     var channel = connection?.CreateModel();
 
+                    if (connection is null || channel is null) 
+                    {
+                        _loggingService.LogInformation($"[ProducerAsync] Not Created connection or channel");
+                        continue;
+                    }
+
                     _producingService.UseDataConnection(connection, channel, rabbitMQ.Name);
                 }
                 catch (Exception ex)

@@ -24,7 +24,7 @@ namespace SimpleRabbitMQ.Services
 
         private readonly IRabbitMQFactory _rabbitMQFactory;
         private readonly RabbitMQConfiguration _rabbitMQConfig;
-        private string _consumerTags;
+        private string _consumerTags = string.Empty;
         private bool _disposed = false;
 
         public IConnection? Connection { get; private set; }
@@ -87,12 +87,18 @@ namespace SimpleRabbitMQ.Services
 
             RabbitMQConfig? rabbitMQConfig = _rabbitMQConfig?.GetConfigValue(ConnectionName).Valid();
             RabbitMqExchangeOptions? exchangeConfig = rabbitMQConfig.GetRabbitMqExchangeConfig(ExchangeName).Valid();
-            RabbitMqQueueOptions? queueConfig = exchangeConfig.GetQueueConfig(QueueName);
 
             Connection = _rabbitMQFactory.CreateRabbitMqConnection(rabbitMQConfig);
+            
+            if (Connection is null)
+                throw new Exception("[ConsumerAsyncBase] Error not created Connection!");
+
             Channel = CreateChannel(Connection);
 
-            Channel?.BasicQos(0, PrefetchCount, false);
+            if (Channel is null)
+                throw new Exception("[ConsumerAsyncBase] Error not created Channel!");
+
+            Channel.BasicQos(0, PrefetchCount, false);
 
             var consumer = _rabbitMQFactory.CreateConsumer(Channel);
 
@@ -139,7 +145,7 @@ namespace SimpleRabbitMQ.Services
             return channel;
         }
 
-        private void HandleConnectionCallbackException(object sender, CallbackExceptionEventArgs? @event)
+        private void HandleConnectionCallbackException(object? sender, CallbackExceptionEventArgs? @event)
         {
             if (@event?.Exception is null)
             {
@@ -150,7 +156,7 @@ namespace SimpleRabbitMQ.Services
             throw @event.Exception;
         }
 
-        private void HandleConnectionRecoveryError(object sender, ConnectionRecoveryErrorEventArgs? @event)
+        private void HandleConnectionRecoveryError(object? sender, ConnectionRecoveryErrorEventArgs? @event)
         {
             if (@event?.Exception is null)
             {
@@ -161,7 +167,7 @@ namespace SimpleRabbitMQ.Services
             throw @event.Exception;
         }
 
-        private void HandleChannelBasicRecoverOk(object sender, EventArgs? @event)
+        private void HandleChannelBasicRecoverOk(object? sender, EventArgs? @event)
         {
             if (@event is null)
             {
@@ -171,7 +177,7 @@ namespace SimpleRabbitMQ.Services
             _loggingService.LogInformation("Connection has been reestablished");
         }
 
-        private void HandleChannelCallbackException(object sender, CallbackExceptionEventArgs? @event)
+        private void HandleChannelCallbackException(object? sender, CallbackExceptionEventArgs? @event)
         {
             if (@event?.Exception is null)
             {

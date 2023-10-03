@@ -2,7 +2,7 @@
   <metadata>
     <!-- Informações básicas -->
     <id>SimpleRabbitMQClientOutBox</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>Simple RabbitMQ Client</title>
     <authors>Renan Nunes</authors>
     <owners>Renan Nunes</owners>

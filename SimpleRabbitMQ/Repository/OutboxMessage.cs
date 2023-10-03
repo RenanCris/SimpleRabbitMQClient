@@ -11,7 +11,7 @@ namespace SimpleRabbitMQ.Repository
     {
         public long Id { get; set; }
 
-        public string MessageData { get; set; }
+        public string MessageData { get; set; } = String.Empty;
 
         public DateTime CreatedAt { get; set; }
 
@@ -19,11 +19,11 @@ namespace SimpleRabbitMQ.Repository
 
         public bool IsProcessed { get; private set; }
 
-        public string ExchangeName { get; set; }
+        public string ExchangeName { get; set; } = String.Empty;
 
-        public string ConnectionName { get; set; }
+        public string ConnectionName { get; set; } = String.Empty;
 
-        public string RoutingKey { get; set; }
+        public string RoutingKey { get; set; } = String.Empty;
 
         public void UpdateProcess() { 
             IsProcessed= true;
