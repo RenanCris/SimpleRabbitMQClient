@@ -9,7 +9,7 @@
     <Company>Renan Nunes</Company>
     <Description>Simple rabbitmq client using outbox pattern</Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <PackageProjectUrl>https://github.com/RenanCris/SimpleRabbitMQClient</PackageProjectUrl>
     <PackageId>SimpleRabbitMQClientOutBox</PackageId>
     
