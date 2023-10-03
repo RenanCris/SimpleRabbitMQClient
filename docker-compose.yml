@@ -1,20 +1,11 @@
 version: '3'
 services:
-  rabbitmq-node1:
+  rabbitmq:
     image: "rabbitmq:3-management"
     container_name: rabbitmq-node1
     ports:
       - "5672:5672" # Porta para a comunicação AMQP
       - "15672:15672" # Porta do painel de controle web (Management)
-    environment:
-      - RABBITMQ_ERLANG_COOKIE=same_cookie_for_both_nodes
-
-  rabbitmq-node2:
-    image: "rabbitmq:3-management"
-    container_name: rabbitmq-node2
-    ports:
-      - "5673:5672" # Porta para a comunicação AMQP (porta diferente do primeiro nó)
-      - "15673:15672" # Porta do painel de controle web (Management)
     environment:
       - RABBITMQ_ERLANG_COOKIE=same_cookie_for_both_nodes
     

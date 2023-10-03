@@ -17,7 +17,7 @@ namespace SimpleRabbitMQ.Repository
 
         public DateTime? ModifiedAt { get; private set; }
 
-        public bool IsProcessed { get; private set; } = false;
+        public bool IsProcessed { get; private set; }
 
         public string ExchangeName { get; set; }
 
@@ -29,5 +29,7 @@ namespace SimpleRabbitMQ.Repository
             IsProcessed= true;
             ModifiedAt= DateTime.UtcNow;
         }
+
+        public void InitialValue() => IsProcessed = false;
     }
 }

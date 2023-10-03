@@ -9,16 +9,21 @@ using SimpleRabbitMQ.Validation.Message;
 
 namespace SimpleRabbitMQ.Validation.Infrastructure
 {
-    public class ConsumerTestAsync : ConsumerAsyncJsonObjectBase<AccountMessage>
+    public class ConsumerTestAsync : ConsumerAsyncBase
     {
-        public ConsumerTestAsync(ILoggingService loggingService, IRabbitMQFactory rabbitMQFactory, IOptions<RabbitMQConfiguration> rabbitMQConfig, string connectionName, string exchangeName, string queueName, ushort prefetchCount = 0) : base(loggingService, rabbitMQFactory, rabbitMQConfig, connectionName, exchangeName, queueName, prefetchCount)
+        public ConsumerTestAsync(ILoggingService loggingService, 
+            IRabbitMQFactory rabbitMQFactory, 
+            IOptions<RabbitMQConfiguration> rabbitMQConfig
+            , string connectionName
+            , string exchangeName
+            , string queueName
+            , ushort prefetchCount = 0) : base(loggingService, rabbitMQFactory, rabbitMQConfig, connectionName, exchangeName, queueName, prefetchCount)
         {
         }
 
         protected override Task HandleMessageClientAsync(BasicDeliverEventArgs message, CancellationToken cancellationToken)
         {
-            _loggingService.LogInformation(MessageObject.Id.ToString());
-
+            var _messageString = message.GetMessage();
             return Task.CompletedTask;
         }
     }

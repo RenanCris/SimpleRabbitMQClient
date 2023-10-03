@@ -15,7 +15,7 @@ namespace SimpleRabbitMQ.Factories
         {
             if (string.IsNullOrEmpty(connectionName) || string.IsNullOrEmpty(exchangeName) ) throw new ArgumentNullException("[OutboxMessageFactory] Connection or Exchange was not declared.");
 
-            return new OutboxMessage
+            var outObx = new OutboxMessage
             {
                 ConnectionName = connectionName,
                 ExchangeName = exchangeName,
@@ -23,19 +23,27 @@ namespace SimpleRabbitMQ.Factories
                 RoutingKey = routingKey
 
             };
+
+            outObx.InitialValue();
+
+            return outObx;
         }
 
         public static OutboxMessage Create(string connectionName, string exchangeName, string routingKey, string message)
         {
             if (string.IsNullOrEmpty(connectionName) || string.IsNullOrEmpty(exchangeName)) throw new ArgumentNullException("[OutboxMessageFactory] Connection or Exchange was not declared.");
 
-            return new OutboxMessage
+            var outObx =  new OutboxMessage
             {
                 ConnectionName = connectionName,
                 ExchangeName = exchangeName,
                 MessageData = message,
                 RoutingKey = routingKey
             };
+
+            outObx.InitialValue();
+
+            return outObx;
         }
     }
 }

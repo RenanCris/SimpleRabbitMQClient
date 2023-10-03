@@ -45,6 +45,22 @@ To use the indirect publishing service. Persistence message in DataBase
 
     IProducingOutBoxService
 
+**It is crucial to specify the connection name, which is equivalent to the 'Name' property in the 'RabbitMQConfig' object**
+
+
+    await producer
+                .SetConnectionName("ConnA")
+                .SendAsync(Object, "test-exchange", "queue-RoutingKey");
+
+    //appssetings config
+
+    "RabbitMQConfig":  [{
+      "HostName": "localhost", 
+      "Port": 5672,            
+      "Name": "ConnA" // Connection Name
+    }]           
+
+
 # Appssetings Configuration
 
 To use the component, it is necessary to provide RabbitMQ configurations, and if you wish to use the production strategy based on the OutBox pattern, you will also need to configure a connection string to the database with MySQL as the provider. Below are the configurations
@@ -56,7 +72,10 @@ To use the component, it is necessary to provide RabbitMQ configurations, and if
       {
         "HostName": "localhost", // required
         "Port": 5672,            // required
-        "Name": "ConnA",         // required
+        "Name": "ConnA",         // required (ConnectionName) Important
+        "InitialConnectionRetries": 3,
+        "InitialConnectionRetryTimeoutMilliseconds" : 200,
+        "RequestedConnectionTimeout": 1, 
         "Exchanges": [
           {
             "Name": "my-exchange",  // required
@@ -80,12 +99,21 @@ To use the component, it is necessary to provide RabbitMQ configurations, and if
         ]
       }
     ]
-  }
+    }
+  
 
+# Automatic initialization
+
+  **Important!!!**
+
+    app.AddInicializeSimpleRabbitMQClient();
 
 # Consumer Example
 
     // ConsumerAsyncJsonObjectBase => Deserialize the message into an object for business processing.
+    
+    // The data representation of the object is contained in the protected property 'MessageObject' with a private setter within the class.
+
 
     public class ConsumerTestAsync : ConsumerAsyncJsonObjectBase<AccountMessage>
     {
@@ -129,5 +157,22 @@ To use the component, it is necessary to provide RabbitMQ configurations, and if
         }
     }
 
+# For Data Base OutBox Usage
+
+The database connection provider is MySQL. To find the script for creating the database and table, please check the **'script.txt'** file in the root of the GitHub repository.
 
     
+# Example Test
+
+*This file* : **docker-compose.yml**
+
+
+# DataBase 
+
+
+
+## Etiquetas
+
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/)
+
+
