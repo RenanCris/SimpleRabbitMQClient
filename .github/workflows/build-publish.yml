@@ -4,7 +4,7 @@ on:
     branches: [main]
 
 env:
-  PATH_PROJECT: SimpleRabbitMQ/SimpleExcelGenerator.csproj
+  PATH_PROJECT: SimpleRabbitMQ/SimpleRabbitMQ.csproj
   PATH_PROJECT_NUSPEC: SimpleRabbitMQ/SimpleRabbitMQ.nuspec
   PATH_TESTS_PROJECT: SimpleRabbitMQ.Test/SimpleRabbitMQ.Test.csproj
   NUGET_SERVER: https://api.nuget.org/v3/index.json
