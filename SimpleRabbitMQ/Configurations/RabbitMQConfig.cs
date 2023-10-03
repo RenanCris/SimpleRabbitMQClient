@@ -88,8 +88,8 @@
         /// </summary>
         public int InitialConnectionRetryTimeoutMilliseconds { get; set; } = 200;
 
-        public IEnumerable<RabbitMqExchangeOptions> Exchanges { get; set; }
+        public IEnumerable<RabbitMqExchangeOptions> Exchanges { get; set; } = Enumerable.Empty<RabbitMqExchangeOptions>();
 
-        public string Name { get; set; }
+        public string Name { get; set; } = String.Empty;
     }
 }

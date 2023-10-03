@@ -11,7 +11,7 @@ namespace SimpleRabbitMQ.Configurations
         /// <summary>
         /// The main class that represents the configuration of the RabbitMQ client is typically called
         /// </summary>
-        public RabbitMQConfig[] RabbitMQConfig { get; set; }
+        public RabbitMQConfig[] RabbitMQConfig { get; set; } = new RabbitMQConfig[0];
 
         /// <summary>
         /// Enables logging of information and warnings. Error logs are always written.

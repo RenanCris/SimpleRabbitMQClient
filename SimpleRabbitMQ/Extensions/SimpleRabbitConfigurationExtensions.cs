@@ -74,7 +74,7 @@ namespace SimpleRabbitMQ.Extensions
                 return (TConsumer)Activator.CreateInstance(typeof(TConsumer),
                     sp.GetRequiredService<ILoggingService>(),
                     sp.GetRequiredService<IRabbitMQFactory>(),
-                    sp.GetService<IOptions<RabbitMQConfiguration>>(),
+                    sp.GetRequiredService<IOptions<RabbitMQConfiguration>>(),
                     connectionName,
                     exchangeName,
                     queueName,
@@ -88,7 +88,7 @@ namespace SimpleRabbitMQ.Extensions
         /// Register producers for exchange."
         /// </summary>
         /// 
-        public static ISimpleRabbitMQConfigBuilder AddProducerAsync(this ISimpleRabbitMQConfigBuilder services, OutBoxConfig outBoxConfig = null) 
+        public static ISimpleRabbitMQConfigBuilder AddProducerAsync(this ISimpleRabbitMQConfigBuilder services, OutBoxConfig? outBoxConfig = null) 
         {
             services.Services.TryAddSingleton<IProducingMessageService, ProducingMessageService>();
             services.Services.AddHostedService<ProducerAsync>();

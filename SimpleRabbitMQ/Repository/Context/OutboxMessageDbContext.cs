@@ -9,7 +9,7 @@ namespace SimpleRabbitMQ.Repository.Context
 {
     public class OutboxMessageDbContext : DbContext
     {
-        public DbSet<OutboxMessage> OutboxMessages { get; set; }
+        public DbSet<OutboxMessage>? OutboxMessages { get; set; }
 
         public OutboxMessageDbContext(DbContextOptions<OutboxMessageDbContext> options)
        : base(options)

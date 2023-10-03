@@ -25,7 +25,7 @@
         /// <summary>
         /// Routing keys collection that queue "listens".
         /// </summary>
-        public string RoutingKey { get; set; }
+        public string RoutingKey { get; set; } = string.Empty;
 
         /// <summary>
         /// Additional arguments.
